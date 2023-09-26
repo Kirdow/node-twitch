@@ -259,6 +259,13 @@ export class TwitchApi extends EventEmitter{
 				await sleep(ratelimit.reset * 1000 - Date.now());
 				return this._get(endpoint);
 			}
+		} else {
+			const ratelimit = {
+				limit: Number(response.headers.get("Ratelimit-Limit")),
+				remaining: Number(response.headers.get("Ratelimit-Remaining")),
+				reset: Number(response.headers.get("Ratelimit-Reset"))
+			};
+			this.emit("ratelimitpoll", ratelimit);
 		}
 
 		const result: T = await response.json();
