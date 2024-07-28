@@ -21,7 +21,8 @@ import {
 	Extension,
 	ActiveExtension,
 	CreatedClip,
-	Moderator, CodeStatus, Commercial, Badge
+	Moderator, CodeStatus, Commercial, Badge,
+	Ingest
 } from "./objects";
 
 export interface APIBaseResponse{
@@ -29,6 +30,12 @@ export interface APIBaseResponse{
 	pagination?: {
 		cursor: string;
 	}
+}
+
+export interface ObseleteResponse {
+	error: "Gone";
+	status: 410,
+	message: "This API is not available."
 }
 
 /** Response from the Twitch API */
@@ -52,9 +59,7 @@ export interface APIChanneInfoResponse{
 	data: ChannelInfo[];
 }
 
-export interface APIFollowResponse extends APIBaseResponse{
-	data: Follow[];
-}
+export type APIFollowResponse = ObseleteResponse;
 
 export interface APIStreamResponse extends APIBaseResponse{
 	data: Stream[];
@@ -76,9 +81,7 @@ export interface APIClipsResponse extends APIBaseResponse{
 	data: Clip[];
 }
 
-export interface APITagResponse extends APIBaseResponse{
-	data: Tag[];
-}
+export type APITagResponse = ObseleteResponse;
 
 export interface APISubResponse extends APIBaseResponse{
 	data: Sub[];
@@ -141,4 +144,8 @@ export interface APICommercialResponse{
 
 export interface APIBadgesResponse{
 	data: Badge[];
+}
+
+export interface APIIngestsResponse {
+	ingests: Ingest[];
 }
