@@ -442,7 +442,7 @@ export class TwitchApi extends EventEmitter{
 
 			const endpoint = "/moderation/bans" + query
 
-			const result = await this._post(endpoint, data)
+			const result = await this._post(endpoint, { data })
 
 			console.warn("TwitchApi Result:", result)
 
