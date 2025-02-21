@@ -444,21 +444,9 @@ export class TwitchApi extends EventEmitter{
 
 			const result = await this._post(endpoint, data)
 
-			return {
-				data: result.data.map((entry: Record<string, any>) => {
-					const createdAt = new Date(Date.parse(entry.created_at))
-					const endAt = new Date(Date.parse(result.end_time))
+			console.warn("TwitchApi Result:", result)
 
-					return {
-						broadcaster_id: result.broadcaster_id as string,
-						moderator_id: result.moderator_id as string,
-						user_id: result.user_id as string,
-						created_at: createdAt,
-						end_time: Number.isNaN(endAt.getTime()) ? null : endAt
-					}
-				})
-			}
-
+			return result
 		} catch (e) {
 			console.error("TwitchApi: Failed to ban user.")
 			console.error("TwitchApi Error:", e)
