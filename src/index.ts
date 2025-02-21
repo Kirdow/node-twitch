@@ -403,8 +403,32 @@ export class TwitchApi extends EventEmitter{
 
 	async banUser(channel: string, mod: string, user: string, reason?: string): Promise<APIBanResponse> {
 		try {
-			const [channelUser, modUser, userUser] = (await this.getUsers([channel, mod, user])).data
-			if (channelUser.login !== channel || modUser.login !== mod || userUser.login !== user) return { data: [] };
+			const users = (await this.getUsers([channel, mod, user])).data
+
+			const [channelUser] = users.filter(p => p.login === channel)
+			const [modUser] = users.filter(p => p.login === mod)
+			const [userUser] = users.filter(p => p.login === user)
+
+			let prefetchSuccess = true
+			if (!channelUser) {
+				console.warn("Failed to fetch broadcaster user")
+				prefetchSuccess = false
+			}
+
+			if (!modUser) {
+				console.warn("Failed to fetch moderator user")
+				prefetchSuccess = false
+			}
+
+			if (!userUser) {
+				console.warn("Failed to fetch target user")
+				prefetchSuccess = false
+			}
+
+			if (!prefetchSuccess) {
+				console.error("Pre-fetch failed")
+				return { data: [] }
+			}
 
 			const [channelId, modId, userId] = [channelUser.id, modUser.id, userUser.id]
 
