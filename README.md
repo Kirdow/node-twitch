@@ -1,4 +1,6 @@
 # node-twitch
+<ins>**NOTE(Kirdow)**</ins>: *This repository is a fork made for use specifically with my own private bot. It's only pulled from upstream when necessary to fix core issues. If you have issues with this repository, don't reach out to upstream as it's not an issue with theirs.*
+
 This package is a wrapper around the Twitch Helix API. It is written in Typescript and provides in-editor documentation for all methods and options. All methods are named after their endpoint names in the [Twitch API Reference](https://dev.twitch.tv/docs/api/reference).
 
 > **NOTE**: This package is still under development. All endpoints are not yet supported. See documentation for all supported endpoints.
