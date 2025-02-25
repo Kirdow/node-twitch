@@ -401,6 +401,7 @@ export class TwitchApi extends EventEmitter{
 		return url;
 	}
 
+	/** Ban user from channel. */
 	async banUser(channel: string, mod: string, user: string, reason?: string): Promise<APIBanResponse> {
 		try {
 			const users = (await this.getUsers([channel, mod, user])).data
@@ -442,23 +443,7 @@ export class TwitchApi extends EventEmitter{
 
 			const endpoint = "/moderation/bans" + query
 
-			const result = await this._post(endpoint, data)
-
-			return {
-				data: result.data.map((entry: Record<string, any>) => {
-					const createdAt = new Date(Date.parse(entry.created_at))
-					const endAt = new Date(Date.parse(result.end_time))
-
-					return {
-						broadcaster_id: result.broadcaster_id as string,
-						moderator_id: result.moderator_id as string,
-						user_id: result.user_id as string,
-						created_at: createdAt,
-						end_time: Number.isNaN(endAt.getTime()) ? null : endAt
-					}
-				})
-			}
-
+			return await this._post(endpoint, { data })
 		} catch (e) {
 			console.error("TwitchApi: Failed to ban user.")
 			console.error("TwitchApi Error:", e)
