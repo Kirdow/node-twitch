@@ -402,7 +402,14 @@ export class TwitchApi extends EventEmitter{
 	}
 
 	/** Ban user from channel. */
-	async banUser(channel: string, mod: string, user: string, reason?: string): Promise<APIBanResponse> {
+	async banUser(channel: string, user: string, reason?: string): Promise<APIBanResponse> {
+		if (!this.user) {
+			console.error("Failed to ban user. Local user is null")
+			return { data: [] }
+		}
+
+		const mod: string = this.user.login
+
 		try {
 			const users = (await this.getUsers([channel, mod, user])).data
 
@@ -452,7 +459,14 @@ export class TwitchApi extends EventEmitter{
 	}
 
 	/** Shoutput user in channel */
-	async shoutoutUser(channel: string, mod: string, user: string): Promise<boolean> {
+	async shoutoutUser(channel: string, user: string): Promise<boolean> {
+		if (!this.user) {
+			console.error("Failed to shoutout user. Local user is null")
+			return false
+		}
+
+		const mod: string = this.user.login
+
 		try {
 			const users = (await this.getUsers([channel, mod, user])).data
 
