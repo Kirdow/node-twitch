@@ -6,10 +6,14 @@ export type Scope =
 	"channel:read:hype_train" |
 	"channel:read:subscriptions" |
 	"channel:read:stream_key" |
+    "channel:bot" |
 	"clips:edit" |
 	"user:edit" |
 	"user:edit:broadcast" |
 	"user:edit:follows" |
 	"user:read:broadcast" |
 	"user:read:email" |
+    "user:read:chat" |
+    "user:write:chat" |
+    "user:bot" |
 	"moderation:read";

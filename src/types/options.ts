@@ -360,3 +360,11 @@ export interface BaseOptions{
 	/** Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.  */
 	before?: string;
 }
+
+export interface SendChatMessageOptions {
+    broadcaster_id: string
+    sender_id: string
+    message: string
+    reply_parent_message_id?: string
+    for_source_only?: boolean
+}

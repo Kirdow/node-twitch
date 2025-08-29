@@ -34,7 +34,8 @@ import {
 	ModifyChannelInformationOptions,
 	UpdateUserOptions,
 	CreateClipOptions,
-	GetModeratorsOptions, GetCodeStatusOptions, ReplaceStreamTagsOptions, StartCommercialOptions
+	GetModeratorsOptions, GetCodeStatusOptions, ReplaceStreamTagsOptions, StartCommercialOptions,
+    SendChatMessageOptions
 } from "./types/options";
 import {
 	APIBitsLeaderboardResponse,
@@ -57,7 +58,8 @@ import {
 	APIActiveUserExtensionResponse,
 	APICreateClipResponse,
 	APIModeratorResponse, APICodeStatusResponse, APICommercialResponse, APIEmotesResponse, APIBadgesResponse,
-	APIIngestsResponse
+	APIIngestsResponse,
+    APIMessageResponse
 } from "./types/responses";
 import { TwitchApiRateLimitError } from "./errors";
 
@@ -925,6 +927,17 @@ export class TwitchApi extends EventEmitter{
 
 		return this._post(endpoint);
 	}
+
+    /** Send chat message on a specific channel. */
+    async sendChatMessage(options: SendChatMessageOptions): Promise<APIMessageResponse> {
+        if (!this._hasScope("user:bot"))
+            this._error("Missing scope `user:bot`");
+
+        const query = "?" + parseOptions(options);
+        const endpoint = `/chat/messages${query}`;
+
+        return this._post(endpoint);
+    }
 
 	/** Get a list of ingest servers for broadcasting. */
 	async getIngestServers(): Promise<APIIngestsResponse> {

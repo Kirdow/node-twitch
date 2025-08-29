@@ -651,3 +651,12 @@ export interface Ingest {
 	url_template: string,
 	priority: number
 }
+
+export interface Message {
+    message_id: string
+    is_sent: boolean
+    drop_reason: {
+        code: string
+        message: string
+    }
+}

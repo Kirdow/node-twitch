@@ -22,7 +22,8 @@ import {
 	ActiveExtension,
 	CreatedClip,
 	Moderator, CodeStatus, Commercial, Badge,
-	Ingest
+	Ingest,
+    Message
 } from "./objects";
 
 export interface APIBaseResponse{
@@ -148,4 +149,8 @@ export interface APIBadgesResponse{
 
 export interface APIIngestsResponse {
 	ingests: Ingest[];
+}
+
+export interface APIMessageResponse {
+    data: Message[];
 }
