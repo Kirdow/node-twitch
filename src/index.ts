@@ -506,7 +506,7 @@ export class TwitchApi extends EventEmitter{
 
 			const endpoint = "/chat/shoutouts"
 
-			return !!(await this._post(endpoint, { data }))
+			return !(await this._post(endpoint, data))
 		} catch (e) {
 			console.error("TwitchApi: Faield to shoutout user.")
 			console.error("TwitchApi Error:", e)
