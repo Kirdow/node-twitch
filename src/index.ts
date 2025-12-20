@@ -461,13 +461,15 @@ export class TwitchApi extends EventEmitter{
 	}
 
 	/** Shoutput user in channel */
-	async shoutoutUser(channel: string, user: string): Promise<boolean> {
-		if (!this.user) {
-			console.error("Failed to shoutout user. Local user is null")
-			return false
-		}
+	async shoutoutUser(channel: string, user: string, mod: string = null!): Promise<boolean> {
+        if (!mod) {
+            if (!this.user) {
+                console.error("Failed to shoutout user. Local user is null")
+                return false
+            }
 
-		const mod: string = this.user.login
+            mod ??= this.user.login
+        }
 
 		try {
 			const users = (await this.getUsers([channel, mod, user])).data
@@ -499,16 +501,19 @@ export class TwitchApi extends EventEmitter{
 
 			const [channelId, modId, userId] = [channelUser.id, modUser.id, userUser.id]
 
-			const data: Record<string, any> = {}
-			data.from_broadcaster_id = channelId
-			data.to_broadcaster_id = userId
-			data.moderator_id = modId
+			const data: Record<string, any> = {
+			    from_broadcaster_id: channelId,
+			    to_broadcaster_id: userId,
+			    moderator_id: modId
+            }
 
 			const endpoint = "/chat/shoutouts"
 
-			return !(await this._post(endpoint, data))
+            const result = await this._post(endpoint, data)
+
+            return result === "" || result === undefined
 		} catch (e) {
-			console.error("TwitchApi: Faield to shoutout user.")
+			console.error("TwitchApi: Failed to shoutout user.")
 			console.error("TwitchApi Error:", e)
 			return false
 		}
