@@ -84,7 +84,7 @@ export class TwitchApi extends EventEmitter{
 	refresh_attempts: number;
 	ready: boolean;
 
-	constructor(config: TwitchApiConfig){
+	private constructor(config: TwitchApiConfig){
 		super();
 
 		this.client_secret = config.client_secret;
@@ -98,9 +98,15 @@ export class TwitchApi extends EventEmitter{
 		this.base = "https://api.twitch.tv/helix";
 		this.refresh_attempts = 0;
 		this.ready = false;
-
-		this._init();
 	}
+
+    /** Initialize constructor asynchronously.
+    */
+    static async create(config: TwitchApiConfig): Promise<TwitchApi> {
+        const api = new TwitchApi(config);
+        await api._init();
+        return api
+    }
 
 	/*
 	****************
