@@ -3,7 +3,7 @@ import { EventEmitter } from "events";
 import { Scope } from "./types/scopes";
 import { User } from "./types/objects";
 import { TwitchApiConfig, BaseOptions, GetAllStreamTagsOptions, GetBitsLeaderboardOptions, GetFollowsOptions, GetStreamsOptions, GetVideosOptions, GetSubsOptions, SearchChannelsOptions, SearchCategoriesOptions, GetStreamTagsOptions, GetBannedUsersOptions, GetExtensionTransactionsOptions, GetCheermotesOptions, GetStreamKeyOptions, GetChannelInfoOptions, CreateUserFollowsOptions, DeleteUserFollowsOptions, ClipsBroadcasterIdOptions, ClipsGameIdOptions, ClipsIdOptions, GetStreamMarkerUserIdOptions, GetStreamMarkerVideoIdOptions, GetUserActiveExtensionsOptions, ModifyChannelInformationOptions, UpdateUserOptions, CreateClipOptions, GetModeratorsOptions, GetCodeStatusOptions, ReplaceStreamTagsOptions, StartCommercialOptions, SendChatMessageOptions } from "./types/options";
-import { APIBitsLeaderboardResponse, APIFollowResponse, APIGameResponse, APIStreamResponse, APITagResponse, APIUserResponse, APIVideoResponse, APISubResponse, APIChannelResponse, APIBanResponse, APIExtensionTransactionResponse, APICheermoteResponse, APIChanneInfoResponse, APIClipsResponse, APIStreamMarkerResponse, APIExtensionResponse, APIActiveUserExtensionResponse, APICreateClipResponse, APIModeratorResponse, APICodeStatusResponse, APICommercialResponse, APIEmotesResponse, APIBadgesResponse, APIIngestsResponse, APIMessageResponse } from "./types/responses";
+import { APIBitsLeaderboardResponse, APIFollowResponse, APIGameResponse, APIStreamResponse, APITagResponse, APIUserResponse, APIVideoResponse, APISubResponse, APIChannelResponse, APIBanResponse, APIBlockedTermResponse, APIExtensionTransactionResponse, APICheermoteResponse, APIChanneInfoResponse, APIClipsResponse, APIStreamMarkerResponse, APIExtensionResponse, APIActiveUserExtensionResponse, APICreateClipResponse, APIModeratorResponse, APICodeStatusResponse, APICommercialResponse, APIEmotesResponse, APIBadgesResponse, APIIngestsResponse, APIMessageResponse } from "./types/responses";
 export { TwitchApiRateLimitError } from "./errors";
 /** Twitch API */
 export declare class TwitchApi extends EventEmitter {
@@ -82,6 +82,8 @@ export declare class TwitchApi extends EventEmitter {
     ***************/
     /** Generate url required to get permission from users */
     generateAuthUrl(): string;
+    /** Add blocked term to channel. */
+    addBlockedTerm(channel: string, text: string): Promise<APIBlockedTermResponse>;
     /** Ban user from channel. */
     banUser(channel: string, user: string, reason?: string): Promise<APIBanResponse>;
     /** Shoutput user in channel */

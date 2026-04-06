@@ -1,4 +1,4 @@
-import { Game, User, Stream, Video, BitsPosition, DateRange, Sub, Channel, Ban, ExtensionTransaction, Cheermote, Emote, StreamKey, ChannelInfo, Clip, StreamMarker, Extension, ActiveExtension, CreatedClip, Moderator, CodeStatus, Commercial, Badge, Ingest, Message } from "./objects";
+import { Game, User, Stream, Video, BitsPosition, DateRange, Sub, Channel, Ban, BlockedTerm, ExtensionTransaction, Cheermote, Emote, StreamKey, ChannelInfo, Clip, StreamMarker, Extension, ActiveExtension, CreatedClip, Moderator, CodeStatus, Commercial, Badge, Ingest, Message } from "./objects";
 export interface APIBaseResponse {
     total?: number;
     pagination?: {
@@ -48,6 +48,9 @@ export interface APISubResponse extends APIBaseResponse {
 }
 export interface APIBanResponse extends APIBaseResponse {
     data: Ban[];
+}
+export interface APIBlockedTermResponse extends APIBaseResponse {
+    data: BlockedTerm[];
 }
 export interface APIExtensionTransactionResponse extends APIBaseResponse {
     data: ExtensionTransaction[];
