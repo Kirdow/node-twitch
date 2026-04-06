@@ -450,7 +450,7 @@ export class TwitchApi extends EventEmitter{
 
             const endpoint = "/moderation/blocked_terms" + query
 
-            return await this._post(endpoint, { data })
+            return await this._post(endpoint, { ...data })
         } catch (e) {
             console.error("TwitchApi: Failed to add blocked term.")
             console.error("TwitchApi Error:", e)
