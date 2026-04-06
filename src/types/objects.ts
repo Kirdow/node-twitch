@@ -336,6 +336,30 @@ export interface Ban{
 	expires_at: string;
 }
 
+export interface BlockedTerm{
+    /** The broadcaster that owns the list of blocked terms. */
+    broadcaster_id: string;
+
+    /** The moderator that blocked the word or phrase from being used in the broadcaster's chat room. */
+    moderator_id: string;
+
+    /** An ID that identifies this blocked term. */
+    id: string;
+
+    /** The blocked word or phrase. */
+    text: string;
+
+    /** The UTC date and time (in RFC3339 format) that the term was blocked. */
+    created_at: string;
+
+    /** The UTC date and time (in RFC3339 format) that the term was upated. */
+    updated_at: string;
+
+    /** The UTC date and time (in RFC3339 format) that the blocked term is set to expire. After the block expires, users may use the term in the broadcaster's chat room.
+      * Note: This field is **null** if the term was added manually or was permanently blocked by AutoMod. */
+    expires_at: string;
+}
+
 export interface Moderator{
 	/** `user_id` of moderator */
 	user_id: string;

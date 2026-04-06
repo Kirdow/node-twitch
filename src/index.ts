@@ -48,6 +48,7 @@ import {
 	APISubResponse,
 	APIChannelResponse,
 	APIBanResponse,
+    APIBlockedTermResponse,
 	APIExtensionTransactionResponse,
 	APICheermoteResponse,
 	APIStreamKeyResponse,
@@ -408,6 +409,54 @@ export class TwitchApi extends EventEmitter{
 		const url = `${base}?${clientId}&${responseType}&${redirectUri}&${scope}`;
 		return url;
 	}
+
+    /** Add blocked term to channel. */
+    async addBlockedTerm(channel: string, text: string): Promise<APIBlockedTermResponse> {
+        if (!this.user) {
+            console.error("Failed to add blocked term. Local user is null")
+            return { data: [] }
+        }
+
+        const mod: string = this.user.login
+
+        try {
+            const users = (await this.getUsers([channel, mod])).data
+
+            const [channelUser] = users.filter(p => p.login === channel)
+            const [modUser] = users.filter(p => p.login === mod)
+
+            let prefetchSuccess = true
+            if (!channelUser) {
+                console.warn("Failed to fetch broadcaster user")
+                prefetchSuccess = false
+            }
+
+            if (!modUser) {
+                console.warn("Failed to fetch moderator user")
+                prefetchSuccess = false
+            }
+
+            if (!prefetchSuccess) {
+                console.error("Pre-fetch failed")
+                return { data: [] }
+            }
+
+            const [channelId, modId] = [channelUser.id, modUser.id]
+
+            const query = `?broadcaster_id=${channelId}&moderator_id=${modId}`
+
+            const data: Record<string, any> = {}
+            data.text = text
+
+            const endpoint = "/moderation/blocked_terms" + query
+
+            return await this._post(endpoint, { data })
+        } catch (e) {
+            console.error("TwitchApi: Failed to add blocked term.")
+            console.error("TwitchApi Error:", e)
+            return { data: [] }
+        }
+    }
 
 	/** Ban user from channel. */
 	async banUser(channel: string, user: string, reason?: string): Promise<APIBanResponse> {

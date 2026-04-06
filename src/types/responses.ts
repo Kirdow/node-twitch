@@ -11,6 +11,7 @@ import {
 	Sub,
 	Channel,
 	Ban,
+    BlockedTerm,
 	ExtensionTransaction,
 	Cheermote,
 	Emote,
@@ -90,6 +91,10 @@ export interface APISubResponse extends APIBaseResponse{
 
 export interface APIBanResponse extends APIBaseResponse{
 	data: Ban[];
+}
+
+export interface APIBlockedTermResponse extends APIBaseResponse{
+    data: BlockedTerm[];
 }
 
 export interface APIExtensionTransactionResponse extends APIBaseResponse{
