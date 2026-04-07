@@ -318,6 +318,53 @@ class TwitchApi extends events_1.EventEmitter {
         const url = `${base}?${clientId}&${responseType}&${redirectUri}&${scope}`;
         return url;
     }
+    /** Get blocked terms in channel. */
+    async getBlockedTerms(channel, options) {
+        if (!this.user) {
+            console.error("Failed to get blocked terms. Local user is null");
+            return { data: [] };
+        }
+        const mod = this.user.login;
+        try {
+            const users = (await this.getUsers([channel, mod])).data;
+            const [channelUser] = users.filter(p => p.login === channel);
+            const [modUser] = users.filter(p => p.login === mod);
+            let prefetchSuccess = true;
+            if (!channelUser) {
+                console.warn("Failed to fetch broadcaster user");
+                prefetchSuccess = false;
+            }
+            if (!modUser) {
+                console.warn("Failed to fetch moderator user");
+                prefetchSuccess = false;
+            }
+            if (!prefetchSuccess) {
+                console.error("Pre-fetch failed");
+                return { data: [] };
+            }
+            const [channelId, modId] = [channelUser.id, modUser.id];
+            const opt = {
+                broadcaster_id: channelId,
+                moderator_id: modId,
+                ...(options ?? {})
+            };
+            const query = "?" + (0, util_1.parseOptions)(opt);
+            const data = {};
+            if (typeof (options?.first) === 'number') {
+                data.first = options.first;
+            }
+            if (typeof (options?.after) === 'string') {
+                data.after = options.after;
+            }
+            const endpoint = "/moderation/blocked_terms" + query;
+            return await this._get(endpoint);
+        }
+        catch (e) {
+            console.error("TwitchApi: Failed to get blocked terms.");
+            console.error("TwitchApi Error:", e);
+            return { data: [] };
+        }
+    }
     /** Add blocked term to channel. */
     async addBlockedTerm(channel, text) {
         if (!this.user) {

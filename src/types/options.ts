@@ -27,6 +27,15 @@ export interface TwitchApiConfig{
 }
 
 /** The options to customize the request. */
+export interface GetBlockedTermsOptions{
+    /** The maximum number of items to return per page in the response. The minimum page size is 1 item per page and the maximum is 100 items per page. The default is 20. */
+    first?: number;
+
+    /** The cursor used to get the next page of results. The **Pagination** object in the response contains the cursor’s value. */
+    after?: string;
+}
+
+/** The options to customize the request. */
 export interface GetFollowsOptions{
 	/** Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query. */
 	after?: string;
