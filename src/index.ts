@@ -80,6 +80,8 @@ export class TwitchApi extends EventEmitter{
 
 	throw_ratelimit_errors: boolean;
 
+    public expires?: number
+
 	/** @internal */
 	base: string;
 	ingestBase: string;
@@ -100,6 +102,7 @@ export class TwitchApi extends EventEmitter{
 		this.base = "https://api.twitch.tv/helix";
 		this.refresh_attempts = 0;
 		this.ready = false;
+        this.expires = undefined;
 	}
 
     /** Initialize constructor asynchronously.
@@ -230,6 +233,11 @@ export class TwitchApi extends EventEmitter{
 		const valid = response.status === 200;
 
 		if(message === "missing authorization token") this._error(message);
+
+        if(valid) {
+            const parsed = parseInt(result.expires_in)
+            this.expires = Number.isNaN(parsed) ? undefined : parsed
+        }
 
 		return valid;
 	}

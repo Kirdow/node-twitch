@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { EventEmitter } from "events";
 import { Scope } from "./types/scopes";
 import { User } from "./types/objects";
