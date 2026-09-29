@@ -22,6 +22,9 @@ export declare class TwitchApi extends EventEmitter {
     refresh_attempts: number;
     ready: boolean;
     private constructor();
+    /** Try to fetch an expiry by potentially calling validate up to 3 times on a 60s cooldown timer.
+     */
+    tryGetExpiry(): Promise<number | null>;
     /** Initialize constructor asynchronously.
     */
     static create(config: TwitchApiConfig): Promise<TwitchApi>;

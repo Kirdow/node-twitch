@@ -10,6 +10,7 @@ const node_fetch_1 = __importDefault(require("node-fetch"));
 const events_1 = require("events");
 const util_1 = require("./util");
 const errors_1 = require("./errors");
+const promises_1 = require("timers/promises");
 var errors_2 = require("./errors");
 Object.defineProperty(exports, "TwitchApiRateLimitError", { enumerable: true, get: function () { return errors_2.TwitchApiRateLimitError; } });
 /** Twitch API */
@@ -42,6 +43,24 @@ class TwitchApi extends events_1.EventEmitter {
         this.refresh_attempts = 0;
         this.ready = false;
         this.expires = undefined;
+    }
+    /** Try to fetch an expiry by potentially calling validate up to 3 times on a 60s cooldown timer.
+     */
+    async tryGetExpiry() {
+        if (typeof (this.expires) === 'number') {
+            return this.expires;
+        }
+        for (let i = 0; i < 3; ++i) {
+            try {
+                await this._validate();
+            }
+            catch (_) { }
+            if (typeof (this.expires) === 'number') {
+                return this.expires;
+            }
+            await (0, promises_1.setTimeout)(60000);
+        }
+        return null;
     }
     /** Initialize constructor asynchronously.
     */

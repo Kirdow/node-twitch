@@ -64,6 +64,7 @@ import {
     APIMessageResponse
 } from "./types/responses";
 import { TwitchApiRateLimitError } from "./errors";
+import { setTimeout } from "timers/promises";
 
 export{ TwitchApiRateLimitError } from "./errors";
 
@@ -104,6 +105,28 @@ export class TwitchApi extends EventEmitter{
 		this.ready = false;
         this.expires = undefined;
 	}
+
+    /** Try to fetch an expiry by potentially calling validate up to 3 times on a 60s cooldown timer.
+     */
+    async tryGetExpiry(): Promise<number | null> {
+        if (typeof(this.expires) === 'number') {
+            return this.expires
+        }
+
+        for (let i = 0; i < 3; ++i) {
+            try {
+                await this._validate()
+            } catch (_) {}
+
+            if (typeof(this.expires) === 'number') {
+                return this.expires
+            }
+
+            await setTimeout(60000)
+        }
+
+        return null
+    }
 
     /** Initialize constructor asynchronously.
     */
